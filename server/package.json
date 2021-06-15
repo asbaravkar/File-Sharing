@@ -10,14 +10,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cloudinary": "^1.26.0",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "mongoose": "^5.12.13"
+    "mongoose": "^5.12.13",
+    "multer": "^1.4.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
     "@types/express": "^4.17.12",
+    "@types/multer": "^1.4.5",
     "@types/node": "^15.12.2",
     "ts-node-dev": "^1.1.6",
     "tsc": "^2.0.3",
