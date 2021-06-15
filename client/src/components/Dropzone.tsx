@@ -33,7 +33,7 @@ const Dropzone: FunctionComponent<{setFile : Dispatch<any>}> = ({setFile}) => {
                         isDragReject ? <p>Sorry, this file format is not supported</p> : 
                         <>
                             <p>Drag & Drop a file here</p>
-                            <p className="mt-2 text-base text-gray-300">Only png, jpeg & mp3 format supported</p>
+                            <p className="mt-2 text-base text-gray-300">Almost all format supported</p>
                         </>
                     }
                     
