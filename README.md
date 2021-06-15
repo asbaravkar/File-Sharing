@@ -5,7 +5,7 @@
 - It is built with Next.js, TypeScript, Tailwind CSS, Express.js and Mongo DB. 
 - Multer is used for file upload and Cloudinary for media storage.
 
-
+![File-Sharing](https://socialify.git.ci/asbaravkar/File-Sharing/image?description=1&font=Raleway&forks=1&language=1&owner=1&pattern=Charlie%20Brown&stargazers=1&theme=Dark)
 
 ### Languages and Tools used:
 
