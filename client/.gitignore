@@ -34,3 +34,5 @@ yarn-error.log*
 .vercel
 
 plan.md
+
+node_modules

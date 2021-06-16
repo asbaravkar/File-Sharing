@@ -2,7 +2,7 @@ import axios from "axios";
 import "tailwindcss/tailwind.css";
 import "../../styles/globals.css";
 
-axios.defaults.baseURL = "http://localhost:8004/"
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_ENDPOINT
 
 function MyApp({ Component, pageProps }) {
   return (

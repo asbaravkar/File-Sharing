@@ -3,6 +3,8 @@ import multer from 'multer'
 import {UploadApiResponse, v2 as cloudinary} from 'cloudinary'
 import File from '../models/File'
 import https from 'https'
+import nodemailer from 'nodemailer'
+import createEmailTemplate from '../utils/createEmailTemplate'
 
 const router = express.Router()
 
@@ -84,6 +86,60 @@ router.get("/:id/download", async(req, res)=>{
     } catch (error) {
         return res.status(500).json({message:"Server error"})
     }
+})
+
+router.post('/email', async(req, res) => {
+    //validate request
+    const {id, emailFrom, emailTo} = req.body 
+    if(!id || !emailFrom || !emailTo) return res.status(400).json({message : "Invalid data"})
+
+    //check if file exist
+    const file = await File.findById(id)
+    if(!file) return res.status(400).json({message : "File does not exist"})
+
+    //create transporter
+    let transporter = nodemailer.createTransport({
+        //@ts-ignore
+        host : process.env.SENDINBLUE_SMTP_HOST!,
+        port : process.env.SENDINBLUE_SMTP_PORT,
+        secure : false,
+        auth : {
+            user : process.env.SENDINBLUE_SMTP_USER,
+            pass : process.env.SENDINBLUE_SMTP_PASSWORD
+        }
+    })
+
+    //prepare email data
+    const {filename, sizeInBytes} = file
+
+    const fileSize = `${(Number(sizeInBytes)/(1024*1024)).toFixed(2)} MB`
+    const downloadPageLink = `${process.env.API_BASE_ENDPOINT_CLIENT}/download/${id}`
+
+    const mailOptions = {
+        from : emailFrom,
+        to : emailTo,
+        subject : "File shared",
+        text : `${emailFrom} has shared a file with you`,
+        html : createEmailTemplate(emailFrom, downloadPageLink, filename, fileSize)
+    }
+
+    //send mail using transporter
+    transporter.sendMail(mailOptions, async(error, info)=>{
+        if(error){
+            console.log(error);
+            return res.status(500).json({message:"Server error"})
+        }
+
+        file.sender = emailFrom
+        file.receiver = emailTo
+
+        await file.save()
+
+        return res.status(200).json({message:"Email sent"})
+    }) 
+
+    //save the data and response
+
 })
 
 export default router
